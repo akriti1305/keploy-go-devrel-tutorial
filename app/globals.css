@@ -1,0 +1,77 @@
+@import "tailwindcss";
+@plugin "@tailwindcss/typography";
+
+:root {
+  --font-inter: 'Inter', system-ui, sans-serif;
+}
+
+@theme inline {
+  --font-sans: var(--font-inter);
+}
+
+/* Smooth scrolling for anchor links */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Dark mode support via class strategy */
+.dark {
+  color-scheme: dark;
+}
+
+/* Custom scrollbar for dark mode */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: #d1d5db;
+  border-radius: 3px;
+}
+.dark ::-webkit-scrollbar-thumb {
+  background: #374151;
+}
+
+/* rehype-pretty-code syntax highlighting integration */
+[data-rehype-pretty-code-figure] {
+  @apply my-6 rounded-xl overflow-hidden border border-gray-200 dark:border-gray-700 shadow-sm;
+}
+
+[data-rehype-pretty-code-figure] pre {
+  @apply bg-gray-950 px-4 py-4 overflow-x-auto text-sm leading-relaxed m-0 rounded-none;
+}
+
+[data-rehype-pretty-code-figure] [data-line] {
+  @apply px-0;
+}
+
+/* Highlighted lines */
+[data-rehype-pretty-code-figure] [data-highlighted-line] {
+  @apply bg-orange-500/10 border-l-2 border-orange-400 pl-3 -ml-4 pr-4;
+}
+
+/* Code captions / file names from rehype-pretty-code */
+[data-rehype-pretty-code-title] {
+  @apply text-xs font-medium text-gray-400 bg-gray-900 px-4 py-2 border-b border-gray-700;
+}
+
+/* Prose overrides for tables */
+.prose table {
+  @apply w-full border-collapse text-sm;
+}
+
+.prose th {
+  @apply font-semibold text-left px-4 py-2 bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-700;
+}
+
+.prose td {
+  @apply px-4 py-2 border border-gray-200 dark:border-gray-700;
+}
+
+/* Selection color */
+::selection {
+  background-color: rgba(251, 146, 60, 0.3);
+}
