@@ -18,24 +18,24 @@ export default function Home() {
         <span>DEVREL QUICKSTART</span>
       </div>
 
-      <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-gray-900 dark:text-white mb-5 tracking-tight leading-[1.1]">
+      <h1 className="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white mb-4 tracking-tight leading-snug">
         API Testing with <span className="text-orange-500">Keploy</span>, Go &amp; MongoDB
       </h1>
 
-      <p className="text-lg sm:text-xl text-gray-600 dark:text-gray-400 mb-8 max-w-2xl leading-relaxed">
-        A hands-on, beginner-friendly tutorial on transparent network interception, auto-generated test cases, and dependency virtualization.
+      <p className="text-base sm:text-lg text-gray-600 dark:text-gray-400 mb-6 max-w-2xl leading-relaxed">
+        A hands-on, beginner-friendly guide to transparent network interception, auto-generated test cases, and dependency virtualization.
       </p>
 
-      {/* Telemetry pill */}
-      <div className="inline-flex flex-wrap items-center justify-center gap-3 px-4 py-2 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-xs font-mono text-emerald-700 dark:text-emerald-300 mb-8 shadow-xs">
-        <span className="flex items-center gap-1.5 font-bold">
-          <CheckIcon className="w-4 h-4 text-emerald-500" />
-          7 / 7 Tests Passed
+      {/* Feature pill */}
+      <div className="inline-flex flex-wrap items-center justify-center gap-2.5 px-3.5 py-1.5 rounded-lg bg-orange-500/5 dark:bg-orange-500/10 border border-orange-500/20 text-xs font-mono text-gray-700 dark:text-gray-300 mb-8">
+        <span className="flex items-center gap-1.5 text-orange-600 dark:text-orange-400 font-semibold">
+          <CheckIcon className="w-3.5 h-3.5" />
+          Zero Manual Assertions
         </span>
-        <span className="text-emerald-500/40">•</span>
-        <span>10.16s Replay</span>
-        <span className="text-emerald-500/40">•</span>
-        <span>Linux kernel eBPF</span>
+        <span className="text-gray-300 dark:text-gray-700">•</span>
+        <span>MongoDB Wire Mocks</span>
+        <span className="text-gray-300 dark:text-gray-700">•</span>
+        <span>Docker / Linux eBPF</span>
       </div>
 
       {/* CTAs */}
