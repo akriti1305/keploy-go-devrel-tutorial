@@ -2,6 +2,12 @@ import type { MDXComponents } from "mdx/types";
 import { Callout } from "@/components/Callout";
 import { Step } from "@/components/Step";
 import { CodeBlock } from "@/components/CodeBlock";
+import { WorkflowComparison } from "@/components/WorkflowComparison";
+import { ArchitectureDiagram } from "@/components/ArchitectureDiagram";
+import { ConceptCards } from "@/components/ConceptCards";
+import { ArtifactsVisual } from "@/components/ArtifactsVisual";
+import { VerifiedBadge } from "@/components/VerifiedBadge";
+import { QuickStartCard } from "@/components/QuickStartCard";
 import React from "react";
 
 function getText(node: React.ReactNode): string {
@@ -92,6 +98,11 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
     Callout,
     Step,
     CodeBlock,
+    WorkflowComparison,
+    ArchitectureDiagram,
+    ConceptCards,
+    ArtifactsVisual,
+    VerifiedBadge,
+    QuickStartCard,
   };
 }
-
