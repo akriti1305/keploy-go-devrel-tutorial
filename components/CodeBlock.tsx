@@ -90,8 +90,8 @@ export function CodeBlock({
       </div>
 
       {/* Code body */}
-      <pre className="bg-gray-950 px-4 py-4 overflow-x-auto text-sm leading-relaxed max-w-full m-0 border-0">
-        <code className={`language-${language} text-gray-200 whitespace-pre block font-mono text-[13px]`}>
+      <pre className="bg-orange-50/60 dark:bg-gray-950 px-4 py-4 overflow-x-auto text-sm leading-relaxed max-w-full m-0 border-0">
+        <code className={`language-${language} text-white dark:text-gray-200 whitespace-pre block font-mono text-[13px]`}>
           {code.trim()}
         </code>
       </pre>

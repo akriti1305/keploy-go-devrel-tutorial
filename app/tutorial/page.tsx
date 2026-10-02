@@ -25,7 +25,7 @@ export default function TutorialPage() {
           prose-p:text-[15px] prose-p:leading-relaxed prose-p:text-gray-700 dark:prose-p:text-gray-300
           prose-a:text-orange-600 dark:prose-a:text-orange-400 prose-a:no-underline hover:prose-a:underline
           prose-code:text-orange-600 dark:prose-code:text-orange-400 prose-code:bg-orange-50 dark:prose-code:bg-orange-950/30 prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded prose-code:text-xs sm:prose-code:text-[13px] prose-code:font-mono prose-code:before:content-none prose-code:after:content-none
-          prose-pre:bg-gray-950 prose-pre:rounded-xl prose-pre:border prose-pre:border-gray-200 dark:prose-pre:border-gray-700 prose-pre:shadow-xs
+          dark:prose-pre:bg-gray-950 prose-pre:rounded-xl prose-pre:border prose-pre:border-gray-200 dark:prose-pre:border-gray-700 prose-pre:shadow-xs
           prose-table:w-full prose-table:text-xs sm:prose-table:text-sm prose-th:text-left prose-th:bg-gray-50 dark:prose-th:bg-gray-900 prose-th:px-3 prose-th:py-2 prose-td:px-3 prose-td:py-2
           prose-blockquote:border-l-4 prose-blockquote:border-orange-400 prose-blockquote:not-italic
           prose-hr:border-gray-200 dark:border-gray-800
