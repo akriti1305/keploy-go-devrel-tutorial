@@ -1,6 +1,8 @@
 @import "tailwindcss";
 @plugin "@tailwindcss/typography";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 :root {
   --font-inter: 'Inter', system-ui, sans-serif;
 }
@@ -17,6 +19,26 @@ html {
 /* Dark mode support via class strategy */
 .dark {
   color-scheme: dark;
+}
+
+/* Strict code block containment to prevent horizontal blowout */
+pre {
+  max-width: 100% !important;
+  overflow-x: auto !important;
+}
+
+pre code {
+  white-space: pre !important;
+  word-break: normal !important;
+}
+
+[role="note"] {
+  max-width: 100% !important;
+}
+
+[role="note"] pre {
+  max-width: 100% !important;
+  overflow-x: auto !important;
 }
 
 /* Custom scrollbar for dark mode */

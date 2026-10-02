@@ -19,7 +19,7 @@ export function CodeBlock({ code, language = "bash", filename }: CodeBlockProps)
   };
 
   return (
-    <div className="my-4 rounded-xl overflow-hidden border border-gray-200 dark:border-gray-700 shadow-sm">
+    <div className="my-4 rounded-xl overflow-hidden border border-gray-200 dark:border-gray-700 shadow-sm max-w-full min-w-0">
       {/* Header bar */}
       <div className="flex items-center justify-between px-4 py-2 bg-gray-100 dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
         <div className="flex items-center gap-2">
@@ -60,8 +60,8 @@ export function CodeBlock({ code, language = "bash", filename }: CodeBlockProps)
       </div>
 
       {/* Code body */}
-      <pre className="bg-gray-950 dark:bg-gray-950 px-4 py-4 overflow-x-auto text-sm leading-relaxed">
-        <code className={`language-${language} text-gray-200`}>{code.trim()}</code>
+      <pre className="bg-gray-950 dark:bg-gray-950 px-4 py-4 overflow-x-auto text-sm leading-relaxed max-w-full m-0">
+        <code className={`language-${language} text-gray-200 whitespace-pre block`}>{code.trim()}</code>
       </pre>
     </div>
   );

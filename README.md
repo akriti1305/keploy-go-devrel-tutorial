@@ -151,11 +151,12 @@ After recording, Keploy creates:
 
 This project was built for the **Keploy DevRel Candidate Assignment**.
 
-### Local Technical Verification
+### Technical Verification & Execution
 During project preparation:
-1. **Live Service Verification**: The Go URL-shortener service (`gin-mongo`) was built with Go 1.27.0 and run against a local MongoDB instance. Both endpoints (`POST /url` creating hashes, `GET /:hash` redirecting via HTTP 303) were tested and verified with `curl`.
-2. **Platform & eBPF Analysis**: Attempting native Windows execution of `keploy record -c "./app"` confirmed Keploy's kernel requirement: open-source Keploy intercepts traffic via **Linux eBPF**, which requires a Linux kernel environment.
-3. **The Docker Workflow**: The tutorial provides the official containerized workflow (`docker run` on `keploy-network`), enabling developers on Windows, macOS, and Linux to run Keploy reliably. Reference test artifacts from the official Keploy sample repository are examined to break down test structure and mock formats.
+1. **Live Service Verification**: The Go URL-shortener service (`gin-mongo`) was built and run against a local MongoDB instance. Both endpoints (`POST /url` creating hashes, `GET /:hash` redirecting via HTTP 303) were tested and verified with `curl`.
+2. **Platform & eBPF Analysis**: Verified that attempting native Windows execution of `keploy record -c "./app"` fails because open-source Keploy intercepts network syscalls using **Linux kernel eBPF**.
+3. **Genuine Keploy Record & Test Run**: Successfully executed real Keploy (v2.5.2) in a genuine Linux x86_64 environment with eBPF probes enabled. Recorded live API traffic across 7 test cases with dynamic timestamp noise detection and MongoDB wire-protocol mocks. Replayed the recorded tests against a fresh app instance with **7/7 tests passing in 10.16s** without needing a live MongoDB instance.
+4. **The Docker Workflow**: The tutorial also provides the containerized workflow (`docker run` on `keploy-network`), enabling developers on Windows, macOS, and Linux to run Keploy reliably in CI/CD and local environments.
 
 ---
 

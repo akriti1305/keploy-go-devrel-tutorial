@@ -32,6 +32,18 @@ export function TableOfContents() {
   const [activeId, setActiveId] = useState<string>("");
 
   useEffect(() => {
+    // Check if there is an initial hash in URL
+    if (typeof window !== "undefined" && window.location.hash) {
+      const initialId = window.location.hash.replace("#", "");
+      const target = document.getElementById(initialId);
+      if (target) {
+        setTimeout(() => {
+          target.scrollIntoView({ behavior: "smooth" });
+          setActiveId(initialId);
+        }, 150);
+      }
+    }
+
     const observer = new IntersectionObserver(
       (entries) => {
         for (const entry of entries) {
@@ -40,7 +52,7 @@ export function TableOfContents() {
           }
         }
       },
-      { rootMargin: "0px 0px -60% 0px", threshold: 0.1 }
+      { rootMargin: "-80px 0px -65% 0px", threshold: 0.1 }
     );
 
     TOC_ITEMS.forEach(({ id }) => {
@@ -63,13 +75,18 @@ export function TableOfContents() {
               href={`#${item.id}`}
               onClick={(e) => {
                 e.preventDefault();
-                document.getElementById(item.id)?.scrollIntoView({ behavior: "smooth" });
+                const el = document.getElementById(item.id);
+                if (el) {
+                  el.scrollIntoView({ behavior: "smooth" });
+                  window.history.pushState(null, "", `#${item.id}`);
+                  setActiveId(item.id);
+                }
               }}
-              className={`block text-sm py-1 px-2 rounded-md transition-all duration-150 ${
+              className={`block text-sm py-1.5 px-2.5 rounded-md transition-all duration-150 ${
                 item.level === 3 ? "pl-4 text-xs" : ""
               } ${
                 activeId === item.id
-                  ? "text-orange-600 dark:text-orange-400 bg-orange-50 dark:bg-orange-900/20 font-medium"
+                  ? "text-orange-600 dark:text-orange-400 bg-orange-50 dark:bg-orange-950/40 font-medium"
                   : "text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800"
               }`}
             >

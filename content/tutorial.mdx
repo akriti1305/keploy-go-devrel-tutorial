@@ -62,9 +62,10 @@ Keploy's transparent traffic interception relies on **Linux kernel eBPF** (exten
 
 - **On Linux:** Keploy runs natively on the host (`sudo -E keploy record -c "./my-app"`).
 - **On Windows & macOS:** Because eBPF is a Linux kernel feature, native execution directly on the Windows host is not supported by the open-source CLI. Running `keploy record -c "./my-app"` directly in Windows PowerShell produces:
-  ```
-  ERROR failed to validate flags: running an application directly on windows/amd64 is not supported by this build of Keploy, which intercepts traffic with eBPF (Linux only).
-  ```
+  <CodeBlock
+    code="ERROR failed to validate flags: running an application directly on windows/amd64 is not supported by this build of Keploy, which intercepts traffic with eBPF (Linux only)."
+    language="text"
+  />
 - **The Cross-Platform Standard:** To record and replay services on Windows or macOS, Keploy uses **Docker containers** on a shared bridge network (`keploy-network`) or a **WSL2** Linux environment.
 
 This tutorial teaches the official Docker-based workflow, which works consistently across Linux, macOS, and Windows with Docker Desktop or WSL2.
@@ -113,7 +114,7 @@ The hash function is deterministic — the same input URL always generates the s
 
 ---
 
-<Step number={1} title="Clone the Project">
+<Step number={1} id="step-1-clone-the-project" title="Clone the Project">
 
 Clone the official Keploy samples repository and navigate into the Gin + MongoDB example:
 
@@ -132,7 +133,7 @@ If you want to verify the Go module dependencies, run `go mod download`. This is
 
 ---
 
-<Step number={2} title="Install Keploy">
+<Step number={2} id="step-2-install-keploy" title="Install Keploy">
 
 Keploy is distributed as a single binary. Install it with the official install script:
 
@@ -158,7 +159,7 @@ The install script downloads the Keploy binary for your architecture (x86-64 or 
 
 ---
 
-<Step number={3} title="Set Up the Docker Network">
+<Step number={3} id="step-3-set-up-docker-network" title="Set Up the Docker Network">
 
 Keploy needs a dedicated Docker network to intercept traffic between your application container and MongoDB. This is the `keploy-network` that both services must share.
 
@@ -175,7 +176,7 @@ Docker containers on the same custom bridge network can resolve each other by co
 
 ---
 
-<Step number={4} title="Start MongoDB">
+<Step number={4} id="step-4-start-mongodb" title="Start MongoDB">
 
 Spin up a MongoDB container attached to `keploy-network`:
 
@@ -205,7 +206,7 @@ If you use a different container name, the app will fail to connect.
 
 ---
 
-<Step number={5} title="Build the App Image">
+<Step number={5} id="step-5-build-the-app-image" title="Build the App Image">
 
 Build the Docker image for the URL shortener. This uses a two-stage Dockerfile: the first stage compiles the Go binary, and the second copies it into a minimal Alpine Linux image.
 
@@ -220,7 +221,7 @@ This will take a minute or two on first run as Docker downloads the base images 
 
 ---
 
-<Step number={6} title="Record Test Cases">
+<Step number={6} id="step-6-record-test-cases" title="Record Test Cases">
 
 This is where Keploy comes alive. Run this command to start the app **under Keploy's watch**:
 
@@ -259,7 +260,7 @@ You should see output like:
 
 ---
 
-<Step number={7} title="Make API Calls to Generate Test Cases">
+<Step number={7} id="step-7-make-api-calls" title="Make API Calls to Generate Test Cases">
 
 Open a **new terminal** and make two API calls. These become your test cases.
 
@@ -310,38 +311,80 @@ keploy/
 
 ## What Keploy Generated
 
-To understand the internal format of Keploy's test suite, let us examine the canonical reference artifacts (`test-1.yaml`, `test-2.yaml`, and `mocks.yaml`) provided in the official sample repository. These files illustrate the exact schema generated during a successful recording run in a containerized Linux environment.
+When recording stops, Keploy writes the captured test cases and dependency mocks directly to disk inside `keploy/test-set-0/`:
 
-**`test-1.yaml` — the recorded POST request:**
-```yaml
-version: api.keploy.io/v1beta1
-kind: Http
-name: test-1
-spec:
-  req:
-    method: POST
-    url: http://localhost:8080/url
-    header:
-      Content-Type: application/json
-    body: '{"url": "https://google.com"}'
-  resp:
-    status_code: 200
-    body: '{"ts":1718943885198315028,"url":"http://localhost:8080/Lhr4BWAi"}'
-  assertions:
-    noise:
-      body.ts: []       # ← This field is excluded from comparison
-      header.Date: []   # ← HTTP Date header is excluded too
+```
+keploy/
+└── test-set-0/
+    ├── tests/
+    │   ├── test-1.yaml ... test-7.yaml  ← Recorded HTTP requests & responses
+    └── mocks.yaml                       ← Captured MongoDB wire-protocol interactions
 ```
 
-Notice the `noise` section. Keploy automatically detected that `body.ts` is a timestamp that changes on every call, so it added it to the noise list — meaning this field will be **ignored during test comparison**. This is one of Keploy's smartest features: it knows which fields are inherently non-deterministic and excludes them automatically.
+Let us examine the exact structure of a recorded test case:
 
-**`mocks.yaml` — the MongoDB calls:**
+**`test-4.yaml` — the recorded POST request:**
+```yaml
+# Generated by Keploy (2.5.2)
+version: api.keploy.io/v1beta1
+kind: Http
+name: test-4
+spec:
+    metadata: {}
+    req:
+        method: POST
+        proto_major: 1
+        proto_minor: 1
+        url: http://localhost:8080/url
+        header:
+            Content-Type: application/json
+            User-Agent: curl/8.18.0
+        body: '{"url":"https://keploy.io"}'
+        timestamp: 2026-10-02T01:40:29.890550014-04:00
+    resp:
+        status_code: 200
+        header:
+            Content-Length: "65"
+            Content-Type: application/json; charset=utf-8
+            Date: Fri, 02 Oct 2026 05:40:29 GMT
+        body: '{"ts":1790919629951156246,"url":"http://localhost:8080/7fvpSsFg"}'
+        status_message: OK
+    assertions:
+        noise:
+            body.ts: []       # ← Automatically marked as noise: timestamp changes every run
+            header.Date: []   # ← HTTP Date header changes every run
+```
 
-This file contains the full MongoDB wire-protocol conversations — the exact bytes that went between the Go driver and MongoDB. During test replay, Keploy serves these pre-recorded responses, so MongoDB does not need to be running at all.
+Notice the `assertions.noise` section. Keploy automatically detected that `body.ts` is a dynamic Unix timestamp that changes on every call, so it added it to the noise list. During test comparison, **Keploy ignores noisy fields**, avoiding false positives while still strictly verifying the rest of the response.
+
+**`mocks.yaml` — the captured MongoDB calls:**
+```yaml
+# Generated by Keploy (2.5.2)
+version: api.keploy.io/v1beta1
+kind: Mongo
+name: mock-0
+spec:
+    metadata:
+        type: config
+    requests:
+        - header:
+            Opcode: 2004
+          message:
+            collection_name: admin.$cmd
+            query: '{"isMaster":{"$numberInt":"1"},"helloOk":true}'
+    responses:
+        - header:
+            Opcode: 1
+          message:
+            documents:
+                - '{"helloOk":true,"ismaster":true,"ok":{"$numberDouble":"1.0"}}'
+```
+
+This file contains the binary wire-protocol conversations between the Go MongoDB driver and the MongoDB daemon. During test replay, Keploy's proxy intercepts the database connection and serves these exact pre-recorded responses — meaning MongoDB does not need to be running at all during test replay.
 
 ---
 
-<Step number={8} title="Run the Tests">
+<Step number={8} id="step-8-run-the-tests" title="Run the Tests">
 
 With the test cases recorded, you can now replay them against a fresh instance of your app. Keploy will start the app, intercept its outgoing database calls, serve the pre-recorded MongoDB responses, make the original HTTP requests, and compare the responses.
 
@@ -363,11 +406,17 @@ The `--delay 10` flag tells Keploy to wait 10 seconds after starting the app bef
 
 Expected output:
 ```
-🐰 Keploy: Running test-set-0 (2 tests)...
-✅ Test 1 PASSED — POST /url
-✅ Test 2 PASSED — GET /Lhr4BWAi
-─────────────────────────
-Tests run: 2 | Passed: 2 | Failed: 0
+ <=========================================> 
+  COMPLETE TESTRUN SUMMARY. 
+	Total tests: 7
+	Total test passed: 7
+	Total test failed: 0
+	Total time taken: "10.16 s"
+
+	Test Suite Name		Total Test	Passed		Failed		Time Taken	
+
+	"test-set-0"		7		7		0		"10.16 s"
+<=========================================> 
 ```
 
 <Callout type="success" title="No MongoDB required!">
@@ -478,9 +527,10 @@ assertions:
 Keploy's core interception engine relies on Linux kernel eBPF (extended Berkeley Packet Filter) to transparently capture network syscalls.
 
 If you attempt to run `keploy record -c "./my-app"` directly on native Windows PowerShell or cmd, the open-source CLI will exit with:
-```
-ERROR failed to validate flags: running an application directly on windows/amd64 is not supported by this build of Keploy, which intercepts traffic with eBPF (Linux only).
-```
+<CodeBlock
+  code="ERROR failed to validate flags: running an application directly on windows/amd64 is not supported by this build of Keploy, which intercepts traffic with eBPF (Linux only)."
+  language="text"
+/>
 To run Keploy on Windows:
 1. **Docker workflow (recommended):** Use `keploy record -c "docker run ..."` as shown in this tutorial.
 2. **WSL2 workflow:** Install Ubuntu in WSL2 (`wsl --install -d Ubuntu`), run Docker Desktop with the WSL2 backend enabled, and execute Keploy directly within the Linux terminal.

@@ -57,15 +57,15 @@ export function Callout({ type = "info", title, children }: CalloutProps) {
 
   return (
     <div
-      className={`my-6 flex gap-3 rounded-xl border p-4 ${s.container}`}
+      className={`my-6 flex gap-3 rounded-xl border p-4 max-w-full overflow-hidden ${s.container}`}
       role="note"
     >
       <div className={`mt-0.5 flex-shrink-0 ${s.icon}`}>
         <IconComponent className="w-5 h-5" />
       </div>
-      <div>
+      <div className="min-w-0 flex-1 overflow-hidden">
         <p className={`font-semibold text-sm mb-1 ${s.title}`}>{displayTitle}</p>
-        <div className="text-sm text-gray-700 dark:text-gray-300 [&>p]:m-0 [&>ul]:mt-1">
+        <div className="text-sm text-gray-700 dark:text-gray-300 [&>p]:m-0 [&>ul]:mt-1 min-w-0 overflow-x-auto max-w-full">
           {children}
         </div>
       </div>
