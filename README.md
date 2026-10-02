@@ -3,7 +3,7 @@
 A beginner-friendly tutorial website for using **Keploy** with a Go + Gin + MongoDB application.
 Built with **Next.js 16** + **MDX** + **Tailwind CSS** as part of the Keploy DevRel Candidate Assignment.
 
-🔗 **Live Site**: [View on Vercel](<!-- VERCEL_URL -->)  
+🔗 **Live Site**: [View on Vercel](https://keploy-go-devrel-tutorial.vercel.app/)  
 📦 **Sample App**: [keploy/samples-go · gin-mongo](https://github.com/keploy/samples-go/tree/main/gin-mongo)
 
 ---
