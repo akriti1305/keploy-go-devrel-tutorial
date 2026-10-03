@@ -82,7 +82,7 @@ keploy-go-devrel-tutorial/
 
 ```bash
 # 1. Clone this repository
-git clone https://github.com/<your-username>/keploy-go-devrel-tutorial.git
+git clone https://github.com/akriti1305/keploy-go-devrel-tutorial.git
 cd keploy-go-devrel-tutorial
 
 # 2. Install dependencies
