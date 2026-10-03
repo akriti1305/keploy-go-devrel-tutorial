@@ -18,7 +18,7 @@ export function QuickStartCard() {
     <div className="rounded-xl border border-gray-200 dark:border-gray-800 bg-gray-50/80 dark:bg-gray-900/40 px-3.5 py-2.5 flex flex-col sm:flex-row sm:items-center justify-between gap-2.5">
       <div className="flex items-center gap-2 flex-shrink-0">
         <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-orange-600 dark:text-orange-400">
-          Quick Start:
+          Jump to:
         </span>
       </div>
 
