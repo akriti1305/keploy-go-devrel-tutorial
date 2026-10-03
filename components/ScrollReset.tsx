@@ -30,5 +30,13 @@ export function ScrollReset() {
     window.scrollTo({ top: 0, left: 0, behavior: "instant" });
   }, [pathname]);
 
-  return null;
+  return (
+    <style>{`
+      article table {
+        display: block;
+        max-width: 100%;
+        overflow-x: auto;
+      }
+    `}</style>
+  );
 }

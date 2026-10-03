@@ -57,14 +57,14 @@ Before starting, make sure you have the following installed and ready:
 
 | Requirement | Minimum Version | Why it is needed |
 |-------------|----------------|-----------------|
-| Operating System | Linux (Ubuntu, Debian, Kali, etc.) | Linux kernel required for Keploy eBPF interception (Windows users: use WSL2 or Linux VM) |
+| Operating System | Linux (Ubuntu, Debian, Kali, etc.) | Linux kernel required for Keploy eBPF interception (Windows users: use a Linux VM (tested) or WSL2) |
 | Docker | 20.10+ (tested with 28.5.2) | Runs the app and MongoDB in containers |
 | Keploy Account | Free | Required to authenticate the Keploy CLI (`keploy login`) |
 | curl | Any (tested with 8.18.0) | Makes HTTP requests to record interactions |
 | Go | 1.21+ | Optional — needed only if building or running natively |
 
 <Callout type="warning" title="Platform & eBPF Requirement">
-Keploy's core interception engine relies on Linux kernel eBPF (extended Berkeley Packet Filter). Running Keploy directly in Windows PowerShell or CMD is not supported. Windows users should run this tutorial inside a Linux VM (such as VirtualBox) or WSL2. See [Troubleshooting](#troubleshooting) for details.
+Keploy's core interception engine relies on Linux kernel eBPF (extended Berkeley Packet Filter). Running Keploy directly in Windows PowerShell or CMD is not supported. Windows users should run this tutorial inside a Linux VM (such as VirtualBox, which I tested) or WSL2 (not tested in this tutorial). See [Troubleshooting](#troubleshooting) for details.
 </Callout>
 
 ---
@@ -152,7 +152,7 @@ Keploy 3.8.58`}
 />
 
 <Callout type="info" title="What just happened?">
-The install script downloads the Keploy binary for your architecture (x86-64 or ARM64), places it in `/usr/local/bin/keploy`, and makes it executable. Keploy is open-source (Apache 2.0) and available on GitHub at `github.com/keploy/keploy`.
+The install script downloads the Keploy binary for your architecture (x86-64 or ARM64), places it in `/usr/local/bin/keploy`, and makes it executable. Keploy's source code is available on GitHub at `github.com/keploy/keploy`.
 </Callout>
 
 </Step>
@@ -161,7 +161,7 @@ The install script downloads the Keploy binary for your architecture (x86-64 or 
 
 <Step number={3} id="step-3-set-up-docker-network" title="Set Up the Docker Network">
 
-Keploy needs a dedicated Docker network to intercept traffic between your application container and MongoDB. This is the `keploy-network` that both services must share.
+Your app container and MongoDB need a shared Docker network so the app can reach the database by name. This is the `keploy-network` that both containers will join.
 
 <CodeBlock
   code="docker network create keploy-network"
@@ -170,7 +170,7 @@ Keploy needs a dedicated Docker network to intercept traffic between your applic
 />
 
 <Callout type="info" title="Why a custom network?">
-Docker containers on the same custom bridge network can resolve each other by container name. The Go app connects to MongoDB using `mongoDb:27017` (container name as hostname). If both containers are on `keploy-network`, this name resolves correctly. Keploy also uses this shared network context to intercept the TCP traffic between the two containers.
+Docker containers on the same custom bridge network can resolve each other by container name. The Go app connects to MongoDB using `mongoDb:27017` (container name as hostname). If both containers are on `keploy-network`, this name resolves correctly.
 </Callout>
 
 </Step>
