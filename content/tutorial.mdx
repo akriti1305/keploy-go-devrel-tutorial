@@ -502,7 +502,7 @@ Expected output:
 />
 
 <Callout type="success" title="No MongoDB required!">
-Did you notice? You did not start MongoDB this time. Keploy intercepted every outgoing database call and served the responses from `mocks.yaml`. Your app never knew the difference. This is the power of Keploy's dependency virtualization.
+Did you notice? MongoDB was stopped during this run, yet all tests still passed. Keploy intercepted every outgoing database call and served the responses from `mocks.yaml`. Your app never knew the difference. This is the power of Keploy's dependency virtualization.
 </Callout>
 
 </Step>
