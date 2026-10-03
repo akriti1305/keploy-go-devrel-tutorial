@@ -50,7 +50,7 @@ keploy-go-devrel-tutorial/
 ├── app/
 │   ├── layout.tsx          ← Root layout (dark mode, Inter font, SEO metadata)
 │   ├── globals.css         ← Global styles + Tailwind imports
-│   ├── page.tsx            ← Landing page with CTA
+│   ├── page.tsx            ← Redirects to /tutorial
 │   └── tutorial/
 │       └── page.tsx        ← Tutorial page (renders MDX + TOC sidebar)
 ├── components/
@@ -59,6 +59,7 @@ keploy-go-devrel-tutorial/
 │   ├── Callout.tsx         ← Info/Warning/Tip/Success callout boxes
 │   ├── Step.tsx            ← Numbered step indicator component
 │   ├── CodeBlock.tsx       ← Code block with copy-to-clipboard button
+│   ├── ScrollReset.tsx     ← Disables browser scroll restoration on reload
 │   └── TableOfContents.tsx ← Active-section TOC with IntersectionObserver
 ├── content/
 │   └── tutorial.mdx        ← The actual tutorial content (MDX)

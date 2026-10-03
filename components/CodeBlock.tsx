@@ -33,8 +33,8 @@ export function CodeBlock({
   if (variant === "command" || badge === "YOU RUN") {
     displayBadge = displayBadge || "YOU RUN";
     badgeClasses = "bg-orange-500/10 text-orange-600 dark:text-orange-400 border-orange-500/25";
-  } else if (variant === "output" || badge === "KEPLOY RESPONDS") {
-    displayBadge = displayBadge || "KEPLOY RESPONDS";
+  } else if (variant === "output" || badge === "Expected output") {
+    displayBadge = displayBadge || "Expected output";
     badgeClasses = "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/25";
   }
 

@@ -51,7 +51,7 @@ export function TutorialHero() {
             <circle cx="12" cy="12" r="10" />
             <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6l4 2" />
           </svg>
-          <span>20 min read</span>
+          <span>12 min read</span>
         </div>
         <div className="flex items-center gap-1.5">
           <svg className="w-3.5 h-3.5 text-emerald-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
