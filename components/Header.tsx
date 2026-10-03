@@ -5,24 +5,20 @@ import Link from "next/link";
 import { SunIcon, MoonIcon } from "@/components/Icons";
 
 export function Header() {
-  // Lazy initializer: reads theme preference once on first render (client only).
-  // Using a function avoids calling setDark() inside a useEffect, which triggers
-  // the react-hooks/set-state-in-effect lint error.
-  const [dark, setDark] = useState<boolean>(() => {
-    if (typeof window === "undefined") return false;
+  const [dark, setDark] = useState(false);
+
+  useEffect(() => {
     const stored = localStorage.getItem("theme");
     const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-    return stored === "dark" || (!stored && prefersDark);
-  });
-
-  // Sync the <html> class with the current dark state on mount.
-  useEffect(() => {
-    if (dark) {
+    const isDark = stored === "dark" || (!stored && prefersDark);
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- hydrate theme from localStorage/matchMedia on mount to prevent SSR hydration mismatch
+    setDark(isDark);
+    if (isDark) {
       document.documentElement.classList.add("dark");
     } else {
       document.documentElement.classList.remove("dark");
     }
-  }, [dark]);
+  }, []);
 
   const toggleTheme = () => {
     const next = !dark;

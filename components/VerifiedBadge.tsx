@@ -7,8 +7,8 @@ interface VerifiedBadgeProps {
 }
 
 export function VerifiedBadge({
-  testsCount = 7,
-  timeTaken = "10.16s",
+  testsCount = 2,
+  timeTaken = "10.11s",
   className = "",
 }: VerifiedBadgeProps) {
   return (
@@ -72,7 +72,7 @@ export function VerifiedBadge({
         <p className="flex items-center gap-1.5">
           <span className="text-emerald-500 font-bold">✓</span>
           <span>
-            Verified in real Linux x86_64 environment with eBPF probes enabled (Keploy v2.5.2).
+            Verified in real Linux x86_64 environment with eBPF probes enabled (Keploy v3.8.58).
           </span>
         </p>
         <span className="text-gray-500 dark:text-gray-400 italic font-mono text-[11px]">

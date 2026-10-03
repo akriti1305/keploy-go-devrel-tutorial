@@ -5,11 +5,11 @@ interface QuickStep {
 }
 
 const QUICK_STEPS: QuickStep[] = [
-  { num: 1, label: "Clone", targetId: "step-1-clone-the-project" },
-  { num: 2, label: "Install Keploy", targetId: "step-2-install-keploy" },
-  { num: 3, label: "Start DB", targetId: "step-4-start-mongodb" },
-  { num: 4, label: "Record", targetId: "step-6-record-test-cases" },
-  { num: 5, label: "Replay", targetId: "step-8-run-the-tests" },
+  { num: 2, label: "Install", targetId: "step-2-install-keploy" },
+  { num: 4, label: "Start DB", targetId: "step-4-start-mongodb" },
+  { num: 5, label: "Build", targetId: "step-5-build-the-app-image" },
+  { num: 6, label: "Record", targetId: "step-6-record-test-cases" },
+  { num: 8, label: "Run tests", targetId: "step-8-run-the-tests" },
 ];
 
 

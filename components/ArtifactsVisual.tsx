@@ -18,13 +18,10 @@ export function ArtifactsVisual() {
         </div>
         <div className="pl-9 space-y-0.5 text-gray-400">
           <div>
-            ├── test-1.yaml <span className="text-emerald-400 text-[11px] font-sans"># POST /url (HTTP request + response)</span>
+            ├── post-url-1.yaml <span className="text-emerald-400 text-[11px] font-sans"># POST /url (HTTP request + response)</span>
           </div>
           <div>
-            ├── test-2.yaml <span className="text-emerald-400 text-[11px] font-sans"># GET /:hash (303 redirect)</span>
-          </div>
-          <div>
-            ├── test-3.yaml ... test-7.yaml <span className="text-gray-500 text-[11px] font-sans"># Additional captured test cases</span>
+            └── get-lhr4bwai-1.yaml <span className="text-emerald-400 text-[11px] font-sans"># GET /:hash (303 redirect)</span>
           </div>
         </div>
         <div className="pl-6 text-gray-300 pt-0.5">
