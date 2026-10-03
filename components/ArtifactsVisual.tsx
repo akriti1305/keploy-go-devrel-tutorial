@@ -6,26 +6,26 @@ export function ArtifactsVisual() {
         <span className="text-orange-400 font-semibold lowercase">keploy/test-set-0/</span>
       </div>
 
-      <div className="space-y-1 leading-relaxed text-[12px]">
+      <div className="space-y-1 leading-relaxed text-[12px] whitespace-pre overflow-x-auto">
         <div>
           <span className="text-orange-400 font-bold">keploy/</span>
         </div>
-        <div className="pl-3 text-gray-300">
+        <div className="text-gray-300">
           └── <span className="text-orange-300">test-set-0/</span>
         </div>
-        <div className="pl-6 text-gray-300">
-          ├── <span className="text-blue-300">tests/</span>
+        <div className="text-gray-300">
+          {"    ├── "}<span className="text-blue-300">tests/</span>
         </div>
-        <div className="pl-9 space-y-0.5 text-gray-400">
+        <div className="space-y-0.5 text-gray-400">
           <div>
-            ├── post-url-1.yaml <span className="text-emerald-400 text-[11px] font-sans"># POST /url (HTTP request + response)</span>
+            {"    │   ├── "}post-url-1.yaml <span className="text-emerald-400 text-[11px] font-sans"># POST /url (HTTP request + response)</span>
           </div>
           <div>
-            └── get-lhr4bwai-1.yaml <span className="text-emerald-400 text-[11px] font-sans"># GET /:hash (303 redirect)</span>
+            {"    │   └── "}get-lhr4bwai-1.yaml <span className="text-emerald-400 text-[11px] font-sans"># GET /:hash (303 redirect)</span>
           </div>
         </div>
-        <div className="pl-6 text-gray-300 pt-0.5">
-          └── <span className="text-purple-300 font-semibold">mocks.yaml</span>{" "}
+        <div className="text-gray-300 pt-0.5">
+          {"    └── "}<span className="text-purple-300 font-semibold">mocks.yaml</span>{" "}
           <span className="text-purple-400 text-[11px] font-sans"># MongoDB wire-protocol binary interactions</span>
         </div>
       </div>

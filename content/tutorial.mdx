@@ -270,7 +270,7 @@ This is where Keploy comes alive. Run this command to start the app **under Kepl
 | `--network keploy-network` | — | Puts the app on the same network as MongoDB so `mongoDb:27017` resolves |
 
 <Callout type="info" title="What is Keploy doing right now?">
-Keploy launched your container and attached an **eBPF probe** via the Linux kernel to intercept every network socket the app opens. From this moment on:
+Keploy starts its own agent in a Docker container (the log shows the image `docker.io/keploy/enterprise:v3.8.58`) and then reports that the agent is ready to record test cases and mocks. Keploy launched your container and attached an **eBPF probe** via the Linux kernel to intercept every network socket the app opens. From this moment on:
 
 - Every **incoming HTTP request** is intercepted and stored
 - Every **outgoing MongoDB call** is intercepted and stored
@@ -366,38 +366,38 @@ version: api.keploy.io/v1beta1
 kind: Http
 name: post-url-1
 spec:
-  metadata: {}
-  req:
-    method: POST
-    proto_major: 1
-    proto_minor: 1
-    url: http://localhost:8080/url
-    header:
-      Accept: '*/*'
-      Content-Length: "29"
-      Content-Type: application/json
-      Host: localhost:8080
-      User-Agent: curl/8.18.0
-    body: '{"url": "https://google.com"}'
-    timestamp: 2026-10-03T09:22:59.484377582Z
-  resp:
-    status_code: 200
-    header:
-      Content-Length: "65"
-      Content-Type: application/json; charset=utf-8
-      Date: Sat, 03 Oct 2026 09:23:00 GMT
-    body: '{"ts":1791019380237420204,"url":"http://localhost:8080/Lhr4BWAi"}'
-    status_message: OK
-    proto_major: 0
-    proto_minor: 0
-    timestamp: 2026-10-03T09:23:00.238347012Z
-  objects: []
-  assertions:
-    noise:
-      body.ts: []
-      header.Date: []
-  created: 1791019380
-  app_port: 8080`}
+    metadata: {}
+    req:
+      method: POST
+      proto_major: 1
+      proto_minor: 1
+      url: http://localhost:8080/url
+      header:
+        Accept: '*/*'
+        Content-Length: "29"
+        Content-Type: application/json
+        Host: localhost:8080
+        User-Agent: curl/8.18.0
+      body: '{"url": "https://google.com"}'
+      timestamp: 2026-10-03T09:22:59.484377582Z
+    resp:
+      status_code: 200
+      header:
+        Content-Length: "65"
+        Content-Type: application/json; charset=utf-8
+        Date: Sat, 03 Oct 2026 09:23:00 GMT
+      body: '{"ts":1791019380237420204,"url":"http://localhost:8080/Lhr4BWAi"}'
+      status_message: OK
+      proto_major: 0
+      proto_minor: 0
+      timestamp: 2026-10-03T09:23:00.238347012Z
+    objects: []
+    assertions:
+      noise:
+        body.ts: []
+        header.Date: []
+    created: 1791019380
+    app_port: 8080`}
   language="yaml"
   filename="keploy/test-set-0/tests/post-url-1.yaml"
   badge="YAML SPEC"
@@ -519,9 +519,9 @@ Keploy handles this automatically — the recorded test file immediately include
 
 <CodeBlock
   code={`assertions:
-  noise:
-    body.ts: []
-    header.Date: []`}
+    noise:
+      body.ts: []
+      header.Date: []`}
   language="yaml"
   badge="YAML SPEC"
 />
@@ -577,7 +577,7 @@ If you see a failure like `body.ts does not match`, manually add `body.ts` to th
 <Callout type="warning" title="Running on Windows or macOS?">
 Keploy's core interception engine relies on Linux kernel eBPF (extended Berkeley Packet Filter) to transparently capture network syscalls.
 
-If you attempt to run `keploy record -c "./my-app"` directly on native Windows PowerShell or CMD, the open-source CLI exits with:
+On native Windows, Keploy's CLI refuses to run and reports an error like this:
 <CodeBlock
   code="ERROR failed to validate flags: running an application directly on windows/amd64 is not supported by this build of Keploy, which intercepts traffic with eBPF (Linux only)."
   language="text"
@@ -586,19 +586,19 @@ If you attempt to run `keploy record -c "./my-app"` directly on native Windows P
 />
 Because Keploy requires a genuine Linux kernel for eBPF, Windows users must run Keploy inside:
 1. **A Linux Virtual Machine (tested):** Run inside a Linux VM (e.g., Kali or Ubuntu in VirtualBox) where eBPF is natively available.
-2. **WSL2:** Install Ubuntu in WSL2 (`wsl --install -d Ubuntu`) and execute Keploy directly within the Linux environment.
+2. **WSL2 (not tested in this tutorial):** Install Ubuntu in WSL2 (`wsl --install -d Ubuntu`) and execute Keploy directly within the Linux environment.
 </Callout>
 
 ---
 
 ## What I Learned (for Beginners)
 
-Here are the key takeaways from running this hands-on recording and replay session:
+Here are the key takeaways from running this record and replay session in a Kali Linux VM:
 
-- **Running Keploy directly on Windows failed** — Trying to execute Keploy natively in Windows PowerShell failed immediately with an eBPF error stating that running directly on windows/amd64 is not supported, requiring a Linux environment.
-- **Recording required browser sign-in first** — When first running `keploy record`, the process halted waiting for browser OAuth authentication, and interrupting it just printed command usage until I completed `keploy login`.
-- **Docker recording needed `--container-name`** — In Keploy 3.8.58, intercepting the container failed to resolve until I explicitly passed `--container-name "MongoApp"` alongside the docker run command.
-- **Dependency virtualization passed without MongoDB** — After stopping the `mongoDb` container completely, running `keploy test` replayed the mocked network calls and passed 2/2 tests in 10.11 seconds.
+- **Keploy needs a Linux kernel** — Keploy's CLI reports that running an application directly on windows/amd64 is not supported, because its interception relies on eBPF, which is Linux-only. I ran the whole tutorial in a Kali Linux VM in VirtualBox.
+- **Recording needs a sign-in first** — In Keploy 3.8.58, `keploy record` waits for browser authentication until you run `keploy login` and sign in. Interrupting it before that only prints the command usage text.
+- **Docker recording uses `--container-name`** — Keploy 3.8.58's own help text shows `--container-name` for Docker commands, and my recording and replay both used `--container-name "MongoApp"` together with `docker run`.
+- **Replay works without MongoDB** — After stopping the `mongoDb` container, `keploy test` replayed the recorded mocks and passed 2/2 tests in 10.11 seconds.
 
 ---
 
